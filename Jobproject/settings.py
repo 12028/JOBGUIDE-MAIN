@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app1',
-    'django_filters',
 
     'django.contrib.sites', # must
     'allauth', # must
