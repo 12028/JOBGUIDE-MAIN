@@ -1,4 +1,4 @@
-# HIRE-U
+# JOBGUIDE
 
 A Recruitment Portal Build Using Python Web Framework
 
@@ -73,7 +73,7 @@ repository](https://github.com/PurpleBooth/a-good-readme-template/tags).
 
 ## Authors
 
-  - **Aby Jose** 
+  - **Anvy Elsa Thomas** 
    
 
 ## License
