@@ -1,0 +1,101 @@
+{% load static%}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JOBGUIDE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body style="background-image: url('{% static 'images/bk.jpg' %}'); background-size: cover;">
+    <nav class="navbar navbar-expand-lg" style="background-color: #d9e6f2;">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="{% url 'index' %}">JOBGUIDE</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav me-auto ms-auto">
+                    <li class="nav-item">
+                        <a class="btn btn-light fw-bold " href="{% url 'candidatepage' %}">Home</a>
+                    </li>
+                    <!-- Add navigation links if needed -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <section id="hero" class="d-flex align-items-center" data-bs-spy="scroll" class="scrollspy-example" tabindex="0">
+            <div class="container-fluid">
+                <br><br>
+                <marquee style="font-size: 1rem" class="text-white"><b>Dear Jobseeker, Please read all the details carefully and proceed for internships.</b></marquee>
+                <div class="row mb-5 ms-4" id="Home">
+                    <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
+                        <ul class="text-white">
+                            <li style="text-align: justify;">Educational Qualifications:
+                                <br>
+                                Basic Tenth and Twelfth qualification is required.
+                                A bachelor's degree in computer science, information technology, or a related field is often required. Some roles may require a master's degree or specific certifications.
+                            </li>
+                            <br>
+                            <li style="text-align: justify;">Technical Skills:
+                                <br>
+                                Proficiency in programming languages such as Java, Python, C++, or others relevant to the job.
+                            </li>
+                            <br>
+                            <li style="text-align: justify;">Experience:
+                                <br>
+                                For mid to senior-level positions, employers often require prior work experience in IT roles.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0" data-aos="fade-up" data-aos-delay="200">
+                        <ul class="text-white">
+                            <li style="text-align: justify;">Problem-Solving Skills:
+                                <br>
+                                IT professionals should be strong problem solvers, capable of troubleshooting technical issues.
+                            </li>
+                            <br>
+                            <li style="text-align: justify;">Communication Skills:
+                                <br>
+                                Effective communication is important for collaborating with team members and conveying technical information to non-technical stakeholders.
+                            </li>
+                            <br>
+                            <li style="text-align: justify;">Coding and Scripting Skills:
+                                <br>
+                                Depending on the specific job, knowledge of coding and scripting languages may be required.
+                            </li>
+                            <br>
+                            <li style="text-align: justify;">Soft Skills:
+                                <br>
+                                Skills such as time management, organization, and the ability to work under pressure can make a job seeker stand out.
+                            </li>
+                        </ul>
+                    </div>
+                    
+                </div>
+                <div class="col-lg-12 d-flex justify-content-center" data-aos="fade-up" data-aos-delay="200">
+                    <label class="text-white">
+                        <input type="checkbox" id="read-checkbox"> I have read all the points and ready to apply my dream job
+                    </label>
+                </div>
+                <div class="apply_now d-flex justify-content-center">
+                    <a href="{% url 'intern' %}" id="apply-btn" class="boxed-btn3 text-white disabled">Apply For Internships Now</a>
+                </div>
+                <br>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.getElementById('apply-btn').addEventListener('click', function (event) {
+            var checkBox = document.getElementById('read-checkbox');
+            if (!checkBox.checked) {
+                event.preventDefault(); // Prevent the default action of the link
+                alert("You should agree to the rules and regulations before continuing.");
+            }
+        });
+    </script>
+    
+</body>
+</html>

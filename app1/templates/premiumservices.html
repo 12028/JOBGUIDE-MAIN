@@ -1,0 +1,80 @@
+{% extends 'jobseeker\layouts\base.html' %}
+{% load static %}
+{% block content %}
+
+<nav class="navbar" style="background-color: #000000; height: 100px; padding: 30px;">
+    <!-- Navigation bar content -->
+</nav>
+{% comment %} <div class="bradcam_area bradcam_bg_1">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="bradcam_text">
+                    <h3>{{jobtitle}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> {% endcomment %}
+<div class="job_details_area" style="display: flex; justify-content: flex-start; align-items: center; min-height: 100vh; padding-left: 300px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="apply_job_form white-bg">
+                    <div class="col-md-12 mt-2">
+                        <img src="{% static 'jobseeker/img/resume.jpg' %}" style="width:240px; height: 170px; border-radius: 5%;">
+                    </div>
+                    
+
+                    <div class="col-md-12 mt-5">
+                        <div class="submit_btn">
+                        {% comment %} <button class="btn" id="pay-btn" style="text-decoration: none;"><label class="boxed-btn3 w-100 " >Resume Builder</label></button> {% endcomment %}
+                        {% comment %} <a href="{% url 'payment' %}" id="pay-btn" style="text-decoration: none;"><label class="boxed-btn3 w-100 " >Payment</label></a> {% endcomment %}
+                          <a href="{% url 'resumebldrhomepage' %}" id="pay-btn" style="text-decoration: none;"><label class="boxed-btn3 w-100 " >Resume Builder</label></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            {% comment %} <div class="col-md-4">
+                <div class="apply_job_form white-bg">
+                    <div class="col-md-12 mt-2">
+                        <img src="{% static 'jobseeker/img/coverletter.jpg' %}" style="width:240px; height: 170px; border-radius: 2%;">
+                    </div> {% endcomment %}
+                    
+
+                    <div class="col-md-12 mt-5">
+                        <div class="submit_btn">
+                        <!-- <button class="btn" id="pay-btn" style="text-decoration: none;"><label class="boxed-btn3 w-100 " >Resume Builder</label></button> -->
+                        {% comment %} <a href="{% url 'coverletterhomepage' %}" id="pay-btn" style="text-decoration: none;"><label class="boxed-btn3 w-100 " >Cover Letter</label></a> {% endcomment %}
+                          {% comment %} <a href="{% url 'resumebuilderform' %}" id="pay-btn" style="text-decoration: none;"><label class="boxed-btn3 w-100 " >Resume Builder</label></a> {% endcomment %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- <div class="col-md-4">
+                <div class="apply_job_form white-bg">
+                    <div class="col-md-12 mt-2">
+                        <img src="{% static 'jobseeker/img/Resumebuilder.jpg' %}" style="width:240px; height: 170px; border-radius: 5%;">
+                    </div>
+                    
+
+                    <div class="col-md-12 mt-5">
+                        <div class="submit_btn">
+                          <a href="{% url 'resumebuilderform' %}" style="text-decoration: none;"><label class="boxed-btn3 w-100 " >Resume Builder</label></a>  
+                        </div>
+                    </div>
+                </div>
+            </div>
+         -->
+            
+        </div>
+    </div>
+</div>
+
+{% endblock %}

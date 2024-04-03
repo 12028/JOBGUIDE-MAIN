@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Intern</title>
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .internship-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .internship-card {
+            flex: 0 0 calc(33.33% - 20px);
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .internship-image img {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .internship-details {
+            padding: 20px;
+        }
+
+        .internship-details p {
+            margin: 0;
+        }
+
+        @media screen and (max-width: 768px) {
+            .internship-card {
+                flex-basis: calc(50% - 20px);
+            }
+        }
+
+        @media screen and (max-width: 576px) {
+            .internship-card {
+                flex-basis: calc(100% - 20px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contents</h1>
+        <div class="internship-grid">
+            {% for adcont in adconts %}
+            <div class="internship-card">
+                <div class="internship-image">
+                    <img src="{% if adcont.img %}{{ adcont.img.url }}{% else %}path_to_default_image{% endif %}" alt="Cover Image">
+                </div>
+                <div class="internship-details">
+                    <p><strong>Title:</strong> {{ adcont.title }}</p>
+                    <p><strong>Caption:</strong> {{ adcont.caption }}</p>
+                    <p><strong>About:</strong> {{ adcont.moreinfo }}</p>
+                    <p><strong>Uploaded date:</strong> {{ adcont.stdate }}</p>
+                    <!-- Add Edit, Delete, and Download buttons here -->
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

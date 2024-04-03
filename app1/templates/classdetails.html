@@ -1,0 +1,88 @@
+<html>
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+      <!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+      <!-- Card -->
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+      .div1{
+        height: fit-content;
+        width: 35%;
+        text-align:center;
+        background-color:rgba(255, 255, 255, 0.606);
+        margin-top:5%;
+        margin-left:35%;
+        border-radius:10px;
+        padding:6px;
+        font-size: large;
+      }
+    </style>
+        <title>Jobsnatch Internships</title>
+    </head>
+    <body onload="myFunction()" style="background:rgba(7, 119, 179, 0.742);; color:black;font-weight:bolder">
+      <div class="div1">
+                  <h2 style="font-weight: bold;">Confrim your time and date :)</h2>
+                      <form action="interndetails/{{ user.id }}" method="post" onsubmit="cli()"> 
+                        {% csrf_token %}
+                        <br><br>
+                        <label for="uname">Name : </label>
+                        <input type="text" value="{{can}}" name="uname" style="border-radius:7px;margin-left:6%; border:none;text-align:center;width:fit-content;" disabled><br><br>
+                        <label for="ititle">Course : </label>
+                        <input type="text"  name="ititle" value="{{inter}}" style="border-radius:7px;margin-left:6%;border:none;text-align:center;width:fit-content;" disabled><br><br>
+                        <label for="pday">Day : </label>
+                        <input type="date" placeholder="Prefered day" name="pday" style="border-radius:7px;margin-left:6%;border:none;text-align:center;" required>
+                        <br><br>
+                        <label for="ptime" style="margin-left:-14%;">Time :  </label>
+                        <select name="ptime" id="interntime"  style="border-radius:7px;margin-left:2%;border:none;text-align:center;" required>
+                          <option value="9:00 AM">9:00 AM</option>
+                          <option value="11:00 AM">11:00 AM</option>
+                          <option value="2:00 PM">2:00 PM</option>
+                          <option value="4:00 PM">4:00 PM</option>
+                          <option value="7:00 PM">7:00 PM</option>
+                        </select><br><br>
+                        <input type="text" value={{interid}} name="inid" hidden>
+                        <input type="number" value={{canid}} name="caid" hidden>
+                        {% for y in more %}
+                            {{y.status}}
+                            {% if y.inter_id %} 
+                              
+                            {% endif %}
+                        {% endfor %}  
+                              {% for x in feed %}  
+                                
+                                {% if x.intern_id == mo or more.candi_id_id == mor  %} 
+                                  <button type="submit" style="border-radius: 5px;border:none;background: rgb(7, 133, 183);height:fit-content;width:fit-content;font-weight:bold;color:white;font-size:medium;">Applied</button>
+                                  <!-- <button type="submit" style="border-radius: 5px;border:none;background: rgb(7, 133, 183);height:fit-content;width:fit-content;font-weight:bold;color:white;font-size:medium;">Apply</button>          -->
+                                        <!-- <input type="submit" style="background: transparent;border:none;font-size:medium;" value="Apply >>"> -->
+                                {% endif %}  
+                              {% endfor %}  
+                            
+                        <button type="submit"  style="border-radius: 5px;border:none;background: rgb(7, 133, 183);height:fit-content;width:fit-content;font-weight:bold;color:white;font-size:medium;">Pay Now</button> 
+                      </form>
+                    </div>
+      <script>
+      function cli(){
+        alert('Date confirmed, Please complete the payment :)') 
+      }
+      function myFunction() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "topnav") {
+          x.className += " responsive";
+        } else {
+          x.className = "topnav";
+        }
+      }
+      </script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+     
+    </body>
+</html>
+

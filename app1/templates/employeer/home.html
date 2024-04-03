@@ -1,0 +1,42 @@
+{% extends 'employeer\layouts\base.html' %}
+{% block content %}
+<div class="page-title">
+    <h2>DASHBOARD</h2>
+</div>
+<section class="section">
+    <div class="row mb-2">
+        <div class="col-12 col-md-3">
+            <div class>
+                <div class="card" style="background-color: #ffffb3;">
+                    <div class="d-flex flex-column">
+                        <div class='px-3 py-3 d-flex justify-content-between'>
+                            <h4 style="color: white;">Posted Jobs</h4> 
+                            <div class="card-right d-flex align-items-center">
+                                <p>{{postedjobcount}}</p>
+                            </div>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="canvas1" style="height:100px !important"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="card" style="background-color: #ffffb3;">
+                <div class="d-flex flex-column">
+                    <div class='px-3 py-3 d-flex justify-content-between'>
+                        <h4 style="color: white;">Applicants</h4> 
+                        <div class="card-right d-flex align-items-center">
+                            <p>0</p>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="canvas2" style="height:100px !important" colo></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internship</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0f0f0f;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .internship-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .internship-card {
+            width: 300px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        .internship-image img {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .internship-details {
+            padding: 20px;
+            margin-bottom: 20px; /* Add margin bottom for space */
+        }
+
+        .internship-details p {
+            margin: 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .more-button {
+            display: block;
+            width: 100px; /* Adjust the width as needed */
+            padding: 8px; /* Adjust the padding as needed */
+            text-align: center;
+            background-color: #f2f2f2; /* Light grey background color */
+            color: #333;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .more-button:hover {
+            background-color: #e0e0e0; /* Darker grey on hover */
+        }
+
+        @media screen and (max-width: 768px) {
+            .internship-card {
+                width: calc(50% - 20px);
+            }
+        }
+
+        @media screen and (max-width: 576px) {
+            .internship-card {
+                width: calc(100% - 20px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align: center; color:#f2f3f7">INTERNSHIP</h1>
+        <div class="internship-grid">
+            {% for adcont in adconts %}
+            <div class="internship-card">
+                <div class="internship-image">
+                    <img src="{% if adcont.img %}{{ adcont.img.url }}{% else %}path_to_default_image{% endif %}" alt="Internship Image">
+                </div>
+                <div class="internship-details">
+                    <p><strong>Title:</strong> {{ adcont.title }}</p>
+                    <p><strong>Caption:</strong> {{ adcont.caption }}</p>
+                    <p><strong>About:</strong> {{ adcont.moreinfo }}</p>
+                    <p><strong>Uploaded date:</strong> {{ adcont.stdate }}</p>
+                </div>
+                <a href="{% url 'interinfo' %}" class="more-button">More</a>
+                <a href="{% url 'classdetail' %}" class="apply-button" style="float: right;">Apply</a>
+                <br> <!-- Button outside internship-details -->
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

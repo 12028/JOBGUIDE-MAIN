@@ -1,0 +1,66 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You</title>
+    <!-- Add your CSS links here -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        .thank-you-section {
+            text-align: center;
+            color: white;
+            font-size: 28px;
+            font-family: 'Times New Roman', Times, serif;
+            margin-top: 50px; /* Adjust as needed */
+        }
+
+        .thank-you-section .btn-primary {
+            display: block;
+            margin: 20px auto; /* Centers the button horizontally */
+        }
+    </style>
+</head>
+<body style="background-image: url('{% static 'images/bk.jpg' %}'); background-size: cover;">
+    <nav class="navbar navbar-expand-lg" style="background-color: #d9e6f2;">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="{% url 'index' %}">JOBGUIDE</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav me-auto ms-auto">
+                    <li class="nav-item">
+                        {% comment %} <a class="btn btn-light fw-bold " href="{% url 'candidatepage' %}">Home</a> {% endcomment %}
+                    </li>
+                    <!-- Add navigation links if needed -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <section id="hero" class="d-flex align-items-center" data-bs-spy="scroll" class="scrollspy-example" tabindex="0">
+            <div class="container-fluid">
+                <br><br>
+                <div class="descript_wrap white-bg">
+                    <div class="single_wrap">
+                        {% comment %} <h4>Description</h4> {% endcomment %}
+                        <p>{{description}}</p>
+                    </div>
+                </div>
+                <div class="thank-you-section">
+                    <p>Thank you for applying. We will contact you shortly.</p>
+                    <a href="{% url 'candidatepage' %}" class="btn btn-primary">Go to Home Page</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Add your scripts here if needed
+    </script>
+</body>
+</html>

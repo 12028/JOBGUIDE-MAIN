@@ -1,0 +1,101 @@
+{% extends 'employeer\layouts\base.html' %}
+{% block content %}
+<div class="page-title">
+    <div class="row">
+        <div class="col-12 col-md-6 order-md-1 order-las">
+            <h3>Job Settings</h3>
+        </div>
+        
+        <div class="col-12 col-md-6 order-md-2 order-first">
+            <nav aria-label="breadcrumb" class='breadcrumb-header'>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'postjob' %}">Job Post settings</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit Job Post</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Update Job</h4>
+        </div>
+        
+        <div class="card-body">
+            {% for message in messages %}
+            <div class="alert {{ message.tags}} alert-dismissible show fade">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            <form id="postjob" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group mb-3">
+                            <label for="JobTitle" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="JobTitle" name="job_title" placeholder="Enter title" oninput="validateJobTitle()">
+                            <span id="titleError" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="jobdescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="jobdescription" rows="3" name="job_description" placeholder="Enter short description" oninput="validateJobDescription()"></textarea>
+                        <span id="descriptionError" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="Duration" class="form-label">Duration (in weeks/months)</label>
+                        <input type="text" class="form-control" id="Duration" name="duration" placeholder="Enter duration" oninput="validateDuration()">
+                        <span id="durationError" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="Location" class="form-label">Location</label>
+                        <input type="text" class="form-control" id="Location" name="location" placeholder="Enter location" oninput="validateLocation()">
+                        <span id="locationError" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="Mode" class="form-label">Mode</label>
+                        <select class="form-select" id="Mode" name="mode" onchange="validateMode()">
+                            <option>--Select--</option>
+                            <option value="Online">Online</option>
+                            <option value="Offline">Offline</option>
+                        </select>
+                        <span id="modeError" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="Stipend" class="form-label">Stipend</label>
+                        <input type="text" class="form-control" id="Stipend" name="stipend" placeholder="Enter stipend" oninput="validateStipend()">
+                        <span id="stipendError" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="WhoCanApply" class="form-label">Who Can Apply</label>
+                        <input type="text" class="form-control" id="WhoCanApply" name="whocanapply" placeholder="Enter eligibility" oninput="validateWhoCanApply()">
+                        <span id="whoCanApplyError" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6 mb-4">
+                        <label for="StartDate" class="form-label">Start Date</label>
+                        <input type="date" class="form-control" id="StartDate" name="start_date" placeholder="Enter starting date" oninput="validateStartDate()">
+                        <span id="startDateError" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6 mb-4">
+                        <label for="EndDate" class="form-label">End Date</label>
+                        <input type="date" class="form-control" id="EndDate" name="end_date" placeholder="Enter ending date" oninput="validateEndDate()">
+                        <span id="endDateError" class="text-danger"></span>
+                    </div>
+                </div>
+                    
+                </div>
+                    <button class="btn btn-primary col-12" type="submit">UPDATE</button>
+                
+            </form>
+        </div>
+    </div>
+
+
+
+
+</div>
+{% endblock %}

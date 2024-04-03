@@ -1,0 +1,193 @@
+{% comment %} {% extends 'base4.html'%} {% endcomment %}
+{% load static %}
+<html>
+{% block content %}
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.a{
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+
+input[type=submit] {
+  background-color: #04AA6D;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+.container {
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.352);
+  padding: 20px;
+  margin-top: 2%;
+  margin-left: 2.5%;
+  width: 95%;
+  height:fit-content;
+}
+
+.col-25 {
+  float: left;
+  width: 25%;
+  margin-top: 6px;
+}
+
+.col-75 {
+  float: left;
+  width: 75%;
+  margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .col-25, .col-75, input[type=submit],.container {
+    width: 100%;
+    height: 100%;
+    margin-top: 0;
+  }
+}
+body {margin:0;font-family:Arial}
+</style>
+</head>
+<body style="background-image: linear-gradient(to right, rgba(22, 172, 213, 0.973),rgba(15, 184, 227, 0.598),rgba(15, 184, 227, 0.598), rgba(22, 172, 213, 0.973));overflow-x: hidden;">
+    <center>
+      <br><br><br><br>
+      <div style="width: 100%;">
+        <div style="background-color:rgba(255, 255, 255, 0.373);align-items:center;width:60%;padding:3%;border-radius:10px;margin-left:15%;">
+         <h2>Add New Internships</h2><br>
+         <table>
+         <form action="{% url 'intern1' %}" method="POST" enctype="multipart/form-data">
+             {% csrf_token %}
+             <tr>
+               <td><label for="tit">Enter Title : </label></td>
+               <td><input type="text" class="a" placeholder="Title" name="tit" class="ab"></td>
+             </tr>
+            
+             <tr>
+               <td><label for="cap">Enter Caption : </label></td>
+               <td><input type="text" class="a" placeholder="caption" name="cap" class="ab"></td>
+             </tr>
+             <tr>
+               <td><label for="durno">Enter Duration : </label></td>
+               <td><input type="text" class="a" placeholder="Duration num" name="durno" class="ab" onkeypress="return /[0-9]/i.test(event.key)" maxlength="2" minlength="1"></td>
+             </tr>
+             <tr>
+               <td><label for="durex">Week/Mon : </label></td>
+               <td><select class="a" name="durex" id="durex">
+                     <option value="Week">Week</option>
+                     <option value="Mon">Mon</option>
+                   </select></td>
+               <!-- <td><input type="text" name="durex" class="ab"></td> -->
+             </tr>
+             <tr>
+              <td><label for="edate">Enter Startdate : </label></td>
+              <td><input type="date" placeholder="Startdate" id="startdate" name="sdate" class="ab" onmouseleave="TDate()" style="border-radius:5px;"></td>
+            </tr>
+             <tr>
+               <td><label for="edate">Enter Enddate : </label></td>
+               <td><input type="date" placeholder="Enddate" id="enddate" name="edate" class="ab" onmouseleave="DateCheck()" style="border-radius:5px;"></td>
+             </tr>
+             <tr>
+                 <td><label for="loc">Location : </label></td>
+                 <td><input type="text" class="a" name="loc" class="ab"></td>
+             </tr>
+             <tr>
+             <tr>
+                 <td><label for="ofon">Online/Offline : </label></td>
+                     <td><select class="a" name="ofon" id="ofon">
+                      <option value="Online">Online</option>
+                      <option value="Offline">Offline</option>
+                     </select></td>
+                 <!-- <td><input type="text" name="ofon" class="ab"></td> -->
+             </tr>
+             <tr>
+                 <td><label for="about">About : </label></td>
+                 <td><textarea name="about" id="" cols="40" rows="5"></textarea></td>
+             </tr>
+             <tr>
+                 <td><label for="stip">Stipend : </label></td>
+                 <td><input type="text" class="a" name="stip" class="ab" onkeypress="return /[0-9]/i.test(event.key)" maxlength="5" minlength="3"></td>
+                 <td><input type="hidden" class="a" name="caty" class="ab" value="{{user.cat}}"></td>
+             </tr>
+             <tr>
+                 <td><label for="wca">Who can Apply : </label></td>
+                 <td><textarea name="wca" class="a" id="" cols="40" rows="5"></textarea></td>
+             </tr>
+               <td><label for="pp" style="background-color: rgb(35, 157, 214);height:20%;padding:1.5%;border-radius:5px;float:left;padding:5%;"> Add Image</label>
+               <input type="file"  accept="image/png, image/jpeg" name="p" id="pp" hidden></td>
+               <td><input type="submit" value="Submit" style="border-radius: 5px;background-color:#07cb83;border:none;padding:1.3%;float:right;padding:4%;" onsubmit="myFunction2()"></td>
+             </tr>
+          </form>
+         </table>
+       </div>
+       </div>
+     </center>
+     <script>
+      function TDate() {
+        var UserDate = document.getElementById("startdate").value;
+        var ToDate = new Date();
+    
+        if (new Date(UserDate).getTime() <= ToDate.getTime()) {
+              alert("The Date must be Bigger or Equal to today date");
+              return false;
+         }
+        return true;
+    }
+
+    
+function DateCheck()
+{
+  var StartDate= document.getElementById('startdate').value;
+  var EndDate= document.getElementById('enddate').value;
+  var eDate = new Date(EndDate);
+  var sDate = new Date(StartDate);
+  if(StartDate!= '' && StartDate!= '' && sDate> eDate)
+    {
+    alert("Please ensure that the End Date is greater than or equal to the Start Date.");
+    return false;
+    }
+  var ToDate = new Date();
+
+  if (new Date(EndDate).getTime() <= ToDate.getTime()) {
+          alert("The Date must be Bigger or Equal to today date");
+          return false;
+     }
+    return true;
+}
+    
+      function myFunction2() {
+        alert("Succefully Added Internship");
+      }
+      
+      
+    </script>
+</body>
+{% endblock %}
+</html>

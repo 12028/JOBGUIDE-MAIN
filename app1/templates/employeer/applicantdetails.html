@@ -1,0 +1,477 @@
+{% extends 'employeer\layouts\base.html' %}
+{% block content %}
+<div class="page-title">
+    <div class="row">
+        <div class="col-12 col-md-6 order-md-1 order-las">
+            <h3>Candidate Details</h3>
+        </div>
+        
+        <div class="col-12 col-md-6 order-md-2 order-first">
+            <nav aria-label="breadcrumb" class='breadcrumb-header'>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'alljobapplicants' %}">All Candidates</a></li>
+                    <li class="breadcrumb-item"><a href="">Candidate</a></li>
+                   
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title"></h4>
+                </div>
+                <div class="card-body">
+                               
+                                    
+                                        <div class="text-center">
+                                            <img class=" img-fluid" src="{{profilelogo.url}}" alt="" style="width: 200px; height: 200px;">
+                                            <h3 class="mb-3 me-4 mt-3">{{firstname}}  {{lastname}}</h3>
+                                            <div class="row">
+                                                {% comment %} <a href="{% url 'chatbox' profileid %}"class="btn btn-success col-lg-4">Message</a> {% endcomment %}
+                                                <a href="{% url 'showpdf' appid %}" target="_blank" class="btn btn-info col-lg-4">View PDF</a>
+                                                <a href=""  class="btn btn btn-warning col-lg-4" data-toggle="modal" data-target="#inlineForm" id="interviewschedulingmodal">Message</a> 
+                                            </div>
+                                        </div>
+
+                                        <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="myModalLabel33">Message</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i data-feather="x"></i></button>
+                                                    </div>
+                                                    <form id="schedule-interview-form" action="{% url 'addscheduleinterview' %}" method="post">
+                                                        {% csrf_token %}
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="form-group">
+                                                                    <label for="duration" >Time Duration : </label>
+                                                                    <select name="duration" id="duration" class="form-control" required>
+                                                                      <option value="1hr">1hr</option>
+                                                                      <option value="30 min">30 min</option>
+                                                                      <option value="More than 1hr">More than 1hr</option>
+                                                                    </select>
+                                                                </div>
+                                                               <div class="form-group">
+                                                                    <label for="type">Type :  </label>
+                                                                    <select name="interviewtype" id="type" class="form-control" required>
+                                                                        <option value="Technical">Technical Interview</option>
+                                                                        <option value="Human Resources">HR Interview</option>
+                                                                    </select>
+                                                               </div>
+                                                               <div class="form-group">
+                                                                    <label for="timeanddate">Time : </label>
+                                                                        <input type="datetime-local" class="form-control" id="timeanddate" name="timeanddate" required><br><br>
+                                                                        <input type="text"  name="applicationid" value={{appid}} hidden>
+                                                                        <input type="text"  name="jobid" value={{jobid}} hidden>
+                                                               </div>
+                                                               
+                                                            </div>       
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-light-secondary" data-dismiss="modal"><i class="bx bx-x d-block d-sm-none"></i><span class="d-none d-sm-block">Close</span></button>
+                                                            <button type="submit"  id="schedule-interview-button" class="btn btn-danger ml-1" data-dismiss="modal"><i class="bx bx-check d-block d-sm-none"></i><span class="d-none d-sm-block">Message</span></button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title"></h4>
+                </div>
+                <div class="card-body"> 
+                    
+                        <h5><i data-feather="chevron-right" width="20"></i>Address       : {{fulladdress}}</h5>
+                        <h5><i data-feather="chevron-right" width="20"></i>Email         : {{email}}</h5>
+                        <h5><i data-feather="chevron-right" width="20"></i>Phone Number  : {{phone}}</h5>
+                        <h5><i data-feather="chevron-right" width="20"></i>Age           : {{age}}</h5>
+                        <h5><i data-feather="chevron-right" width="20"></i>Qualification : {{qualification}}</h5>
+                        <h5><i data-feather="chevron-right" width="20"></i>Applied Job :
+                            
+                                {% for j in jobdetails %}
+                                    {% if applictiondetails.job_id == j.job_id %}
+                                        {{j.job_title}}
+                                    {% endif %}
+                                {% endfor %}
+                          
+                        </h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <table class='table table-bordered' id="table1">
+                        <thead>
+                            <tr>
+                                <th>Mode of Interview</th>
+                                <th>Time Duration</th>
+                                <th>Interview Time and Date</th>
+                                {% comment %} <th>Reschedule</th> {% endcomment %}
+                                {% comment %} <th>Status</th> {% endcomment %}
+                                <th>Add Meeting Link</th>
+                                {% comment %} <th>Completed Or Not</th> {% endcomment %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for a in  scheduledetails %}
+                            <tr>
+                                <td>{{a.interview_type}}</td>
+                                <td>{{a.time_duration}}</td>
+                                <td>{{a.interview_timeanddate}}</td>
+                                {% comment %} <td> <a href=""  class="btn btn btn-info" data-toggle="modal" data-target="#rescheduleform">Reschedule</a> </td>
+
+                                <div class="modal fade text-left" id="rescheduleform" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="myModalLabel33">Reschedule Interview</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i data-feather="x"></i></button>
+                                            </div>
+                                            <form id="reschedule-form" action="{% url 'rescheduleinterview' a.interview_id %}" method="post">
+                                                {% csrf_token %}
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="form-group">
+                                                            <label for="duration" >Time Duration : </label>
+                                                            <select name="duration" id="duration" class="form-control" required>
+                                                                <option value="1hr">1hr</option>
+                                                                <option value="30 min">30 min</option>
+                                                                <option value="More than 1hr">More than 1hr</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="type">Type :  </label>
+                                                            <select name="interviewtype" id="type" class="form-control" required>
+                                                                <option value="Technical">Technical Interview</option>
+                                                                <option value="Human Resources">HR Interview</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="timeanddate">Time : </label>
+                                                            <input type="datetime-local" class="form-control" id="timeanddate" name="timeanddate" required value="{{ timeanddate }}"><br><br>
+                                                            <input type="text"  name="interviewid" value="{{ appid }}" hidden>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="Message">Reason For Rescheduling : </label>
+                                                            <textarea class="form-control"></textarea>
+                                                        </div>
+
+
+                                                    </div>       
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light-secondary" data-dismiss="modal"><i class="bx bx-x d-block d-sm-none"></i><span class="d-none d-sm-block">Close</span></button>
+                                                    <button type="submit"  id="reschedule-interview" class="btn btn-danger ml-1" data-dismiss="modal"><i class="bx bx-check d-block d-sm-none"></i><span class="d-none d-sm-block">Reschedule</span></button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div> {% endcomment %}
+                                {% comment %} <script>
+                                    
+                                    $.get('/rescheduleinterview/' + id + '/', function(data) {
+                                        $('#reschedule-form').attr('action', '/rescheduleinterview/' + id + '/');
+                                        $('#duration').val(data.timeduration);
+                                        $('#type').val(data.interviewtype);
+                                        $('#timeanddate').val(data.timeanddate);
+                                        $('#reschedule-form').modal('show');
+                                    }).fail(function() {
+                                        alert('Error retrieving data.');
+                                    });
+
+                                </script> {% endcomment %}
+
+
+
+
+                                {% comment %} <td> 
+                                       
+                                        {% if a.status == 0 %}
+                                            <span class="badge bg-warning">Not completed</span>
+                                        {% else %}
+                                            <span class="badge bg-success">Completed</span>
+                                        {% endif %}
+        
+                                </td> {% endcomment %}
+                                <td>
+                                    <a href=""  class="btn btn btn-danger" data-toggle="modal" data-target="#postmeetinglink">Add</a> 
+                                    <div class="modal fade text-left" id="postmeetinglink" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="myModalLabel33">Add Interview Link</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i data-feather="x"></i></button>
+                                                </div>
+                                                <form id="addmeetinglink" action="{% url 'addmeetinglink'%}" method="post">
+                                                    {% csrf_token %}
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="form-group">
+                                                                <label for="MeetingLink">Meeting Link</label>
+                                                                <input type="url" class="form-control" id="Meeting-Link" name="MeetingLink"><br><br> 
+                                                                <input type="text"  name="interviewid" id="interviewid" value={{a.interview_id}} hidden>
+                                                            </div>
+                                                        </div>       
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-light-secondary" data-dismiss="modal"><i class="bx bx-x d-block d-sm-none"></i><span class="d-none d-sm-block">Close</span></button>
+                                                        <button type="submit"  id="meetingLinkadd" class="btn btn-danger ml-1" data-dismiss="modal"><i class="bx bx-check d-block d-sm-none"></i><span class="d-none d-sm-block">ADD</span></button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                {% comment %} </td>
+                                <td><input type="checkbox" name="completedornot" id="completedornot_{{ a.interview_schuduling_id}}"></td> {% endcomment %}
+                            </tr>  
+                            {% endfor %}                 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+    </div>
+    
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+<script>
+    function viewPdf() {
+    // Get the URL of the PDF
+    var pdfUrl = "{{ resume.url }}";
+
+    // Open a new window with the PDF URL
+    var pdfWindow = window.open(pdfUrl, "_blank");
+
+    // Check if the window was opened successfully
+    if (!pdfWindow) {
+        alert("Unable to open PDF. Please check your browser settings.");
+    }
+}
+</script>
+
+<script>
+    $(document).ready(function() {
+      // Add an event listener to the submit button
+      $("#schedule-interview-button").click(function(event) {
+        // Prevent the default form submission behavior
+        event.preventDefault();
+  
+        // Get the values of the form fields
+        var duration = $("#duration").val();
+        var interviewType = $("#type").val();
+        var timeAndDate = $("#timeanddate").val();
+        var applicationId = $("input[name=applicationid]").val();
+        var jobid =  $("input[name=jobid]").val();
+        // Send the data to the server using AJAX
+        $.ajax({
+          type: "POST",
+          url: "/addscheduleinterview/",
+          data: JSON.stringify({
+            duration: duration,
+            interviewType: interviewType,
+            timeAndDate: timeAndDate,
+            applicationId: applicationId,
+            jobid:jobid,
+          }),
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            },
+          contentType: "application/json;charset=UTF-8",
+          success: function(data) {
+            // Handle the successful response from the server
+            if(data.status=="Success")
+            {
+                //console.log(data);
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'The Interview for candidate is scheduled',
+                    showConfirmButton: false,
+                    timer: 2500
+                  })
+            }
+          
+            else if(data.status=="Interview already scheduled for this application")
+            {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Sorry...',
+                    text: 'Interview already scheduled for this application',
+                  })
+            }
+            
+          },
+          error: function(xhr, status, error) {
+            // Handle errors
+            console.log(xhr.responseText);
+            Swal.fire({
+                icon: 'warning',
+                title: 'Sorry...',
+                text:xhr.responseText ,
+              })
+          }
+        });
+      });
+    });
+
+    
+    $("#reschedule-interview").click(function(event) {
+        // Prevent the default form submission behavior
+        event.preventDefault();
+  
+        // Get the values of the form fields
+        var duration = $("#duration").val();
+        var interviewType = $("#type").val();
+        var timeAndDate = $("#timeanddate").val();
+        var applicationId = $("input[name=applicationid]").val();
+  
+        // Send the data to the server using AJAX
+        $.ajax({
+          type: "POST",
+          url: "/rescheduleinterview/",
+          data: JSON.stringify({
+            duration: duration,
+            interviewType: interviewType,
+            timeAndDate: timeAndDate,
+            applicationId: applicationId
+          }),
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            },
+          contentType: "application/json;charset=UTF-8",
+          success: function(data) {
+            // Handle the successful response from the server
+            if(data.status=="Success")
+            {
+                //console.log(data);
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'The Interview for candidate is scheduled',
+                    showConfirmButton: false,
+                    timer: 2500
+                  })
+            }
+        
+            else if(data.status=="Interview already scheduled for this application")
+            {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Sorry...',
+                    text: 'Interview already scheduled for this application',
+                  })
+            }
+            
+          },
+          error: function(xhr, status, error) {
+            // Handle errors
+            console.log(xhr.responseText);
+            Swal.fire({
+                icon: 'warning',
+                title: 'Sorry...',
+                text:xhr.responseText ,
+              })
+          }
+        });
+      });
+    
+
+
+$("#meetingLinkadd").click(function(event) {
+// Prevent the default form submission behavior
+event.preventDefault();
+
+// Get the values of the form fields
+var meetinglink = $("#Meeting-Link").val();
+var interviewid = $("#interviewid").val();
+
+
+// Send the data to the server using AJAX
+$.ajax({
+    type: "POST",
+    url: "/addmeetinglink/",
+    data: JSON.stringify({
+    meetinglink: meetinglink,
+    interviewid: interviewid,
+    }),
+    beforeSend: function(xhr) {
+    xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+    },
+    contentType: "application/json;charset=UTF-8",
+    success: function(data) {
+    // Handle the successful response from the server
+    if(data.status=="Success")
+    {
+        //console.log(data);
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'The  Meeting Link is added',
+            showConfirmButton: false,
+            timer: 2500
+            })
+    }
+    
+    else if(data.status=="Meeting  Link is already added")
+    {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Sorry...',
+            text: 'Meeting  Link is already added',
+            })
+    }
+    
+    },
+    error: function(xhr, status, error) {
+    // Handle errors
+    console.log(xhr.responseText);
+    Swal.fire({
+        icon: 'warning',
+        title: 'Sorry...',
+        text:xhr.responseText ,
+        })
+    }
+});
+});
+    
+
+
+
+
+
+    
+ 
+function getCookie(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
+  }
+
+
+
+  </script>
+
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+{% endblock %}

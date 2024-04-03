@@ -1,0 +1,152 @@
+{% extends 'jobseeker\layouts\base.html' %}
+{% load static %}
+{% block content %}
+
+<nav class="navbar" style="background-color: #000000; height: 100px; padding: 30px;">
+    <!-- Navigation bar content -->
+</nav>
+<div class="job_details_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="job_details_header">
+                    <div class="single_jobs white-bg d-flex justify-content-between">
+                        <div class="jobs_left d-flex align-items-center">
+                            <div class="thumb">
+                                {% for j in profiledetails %}
+                                    {% if j.user_id == company_id  %}
+                                        <img src="{{j.company_logo.url}}" alt="" style="height: 50px;width:50px;">
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <div class="jobs_conetent">
+                                <a href="#"><h4>{{job_title}}</h4></a>
+                                <div class="links_locat d-flex align-items-center">
+                                    <div class="location">
+                                        <p> <i class="fa fa-map-marker"></i> 
+                                            {% for j in profiledetails %}
+                                                {% if j.user_id == company_id  %}
+                                                    {{j.office_location}}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </p>
+                                    </div>
+                                    <div class="location">
+                                        <p> <i class="fa fa-clock-o"></i>{{type}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="jobs_right">
+                            <div class="apply_now">
+                                <a class="heart_mark" href="#"> <i class="ti-heart"></i> </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="descript_wrap white-bg">
+                    <div class="single_wrap">
+                        <h4>Job Description</h4>
+                        
+                        <p>{{description}}</p>
+                    </div>
+                   
+                </div>
+                {% if applied %}
+                    <div class="apply_job_form white-bg">
+                        <div class="col-md-12">
+                            <div class="submit_btn">
+                                <label class="boxed-btn3 w-100" >Job is Applied </label>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="apply_job_form white-bg">
+                       
+                        <form id="apply-form" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    
+                                </div>
+                                <div class="col-md-12">
+                                   
+                                </div>
+                                <div class="col-md-12">
+                                    
+                                </div>
+                                <div class="col-md-12">
+                                    <!-- Validation message -->
+                                    <p style="font-size: small; color: red;">Please upload a PDF file.</p>
+                                    <!-- File upload field -->
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button type="button" id="inputGroupFileAddon03"><i class="fa fa-cloud-upload" aria-hidden="true"></i></button>
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="inputGroupFile03" name="resume" accept=".pdf" aria-describedby="inputGroupFileAddon03" required>
+                                            <label class="custom-file-label" for="inputGroupFile03">Upload CV</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="number" class="custom-file-input" id="inputGroupFile03" name="job_id" value="{{jobid}}" hidden>
+                              
+                                <div class="col-md-12">
+                                    <div class="submit_btn">
+                                        <button class="boxed-btn3 w-100" type="submit">Apply Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                {% endif %}
+              
+            </div>
+            <div class="col-lg-4">
+                <div class="job_sumary">
+                    <div class="summery_header">
+                        <h3>Job Details</h3>
+                    </div>
+                    <div class="job_content">
+                        <ul>
+                            <li>Published on: <span>{{publisheddate}}</span></li>
+                            <li>Vacancy: <span>{{vaccancies}} Position</span></li>
+                            
+                            {% for j in profiledetails %}
+                                {% if j.user_id == company_id  %}
+                                    <li>Location: <span>{{j.office_location}}</span></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="share_wrap d-flex">
+                    <span>Share at:</span>
+                    <ul>
+                        <li><a href="#"> <i class="fa fa-facebook"></i></a> </li>
+                        <li><a href="#"> <i class="fa fa-google-plus"></i></a> </li>
+                        <li><a href="#"> <i class="fa fa-twitter"></i></a> </li>
+                        <li><a href="#"> <i class="fa fa-envelope"></i></a> </li>
+                    </ul>
+                </div>
+                        <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+                        
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateForm() {
+        var fileInput = document.getElementById('inputGroupFile03');
+        if (!fileInput.value) {
+            alert('Please upload your CV first.');
+            return false;
+        }
+        return true;
+    }
+</script>
+
+{% endblock %}

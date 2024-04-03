@@ -1,0 +1,241 @@
+{% extends 'employeer\layouts\base.html' %}
+{% block content %}
+<div class="page-title">
+    <div class="row mb-3">
+        <div class="col-12 col-md-6 order-md-1 order-las">
+            <h3>Post New Internship</h3>
+        </div>
+        
+        <div class="col-12 col-md-6 order-md-2 order-first">
+            <nav aria-label="breadcrumb" class='breadcrumb-header'>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'postjob' %}">Jobsettings</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Post Job</li>
+                </ol>
+            </nav>
+        </div>
+
+    </div>
+
+    {% if  verified == 1 %}
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Add Internship</h4>
+        </div>
+        
+        <div class="card-body">
+            {% for message in messages %}
+            <div class="alert {{ message.tags}} alert-dismissible show fade">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            <form id="postjob" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group mb-3">
+                            <label for="JobTitle" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="JobTitle" name="job_title" placeholder="Enter title" oninput="validateJobTitle()">
+                            <span id="titleError" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="jobdescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="jobdescription" rows="3" name="job_description" placeholder="Enter short description" oninput="validateJobDescription()"></textarea>
+                        <span id="descriptionError" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="Duration" class="form-label">Duration (in weeks/months)</label>
+                        <input type="text" class="form-control" id="Duration" name="duration" placeholder="Enter duration" oninput="validateDuration()">
+                        <span id="durationError" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="Location" class="form-label">Location</label>
+                        <input type="text" class="form-control" id="Location" name="location" placeholder="Enter location" oninput="validateLocation()">
+                        <span id="locationError" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="Mode" class="form-label">Mode</label>
+                        <select class="form-select" id="Mode" name="mode" onchange="validateMode()">
+                            <option>--Select--</option>
+                            <option value="Online">Online</option>
+                            <option value="Offline">Offline</option>
+                        </select>
+                        <span id="modeError" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="Stipend" class="form-label">Stipend</label>
+                        <input type="text" class="form-control" id="Stipend" name="stipend" placeholder="Enter stipend" oninput="validateStipend()">
+                        <span id="stipendError" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="WhoCanApply" class="form-label">Who Can Apply</label>
+                        <input type="text" class="form-control" id="WhoCanApply" name="whocanapply" placeholder="Enter eligibility" oninput="validateWhoCanApply()">
+                        <span id="whoCanApplyError" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6 mb-4">
+                        <label for="StartDate" class="form-label">Start Date</label>
+                        <input type="date" class="form-control" id="StartDate" name="start_date" placeholder="Enter starting date" oninput="validateStartDate()">
+                        <span id="startDateError" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6 mb-4">
+                        <label for="EndDate" class="form-label">End Date</label>
+                        <input type="date" class="form-control" id="EndDate" name="end_date" placeholder="Enter ending date" oninput="validateEndDate()">
+                        <span id="endDateError" class="text-danger"></span>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="postajob" type="submit" style='background-color:black;'>Post</button>
+            </form>
+        </div>
+    </div>
+    <!-- Modal for Success Message -->
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Success</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Internship posted successfully!
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+        <div class="alert alert-secondary">
+            <h4 class="alert-heading">You Cannot Add Internship</h4>
+            <p>Oops!! Your account needs to be verified by admin,Please wait until then.</p>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    function validateForm() {
+        // Ensure all fields are validated
+        return (
+            validateJobTitle() &&
+            validateJobDescription() &&
+            validateDuration() &&
+            validateLocation() &&
+            validateMode() &&
+            validateStipend() &&
+            validateWhoCanApply() &&
+            validateStartDate() &&
+            validateEndDate()
+            // Add additional field validations here
+        );
+    }
+    
+    function validateJobTitle() {
+        var jobTitle = document.getElementById("JobTitle").value;
+        var titleError = document.getElementById("titleError");
+        titleError.textContent = "";
+        if (jobTitle.trim() === "") {
+            titleError.textContent = "Job Title is required.";
+            return false;
+        }
+        return true;
+    }
+    
+    function validateJobDescription() {
+        var jobDescription = document.getElementById("jobdescription").value;
+        var descriptionError = document.getElementById("descriptionError");
+        descriptionError.textContent = "";
+        if (jobDescription.trim() === "") {
+            descriptionError.textContent = "Job Description is required.";
+            return false;
+        }
+        return true;
+    }
+    
+    function validateDuration() {
+        var duration = document.getElementById("Duration").value;
+        var durationError = document.getElementById("durationError");
+        durationError.textContent = "";
+        if (duration.trim() === "") {
+            durationError.textContent = "Duration is required.";
+            return false;
+        }
+        // Add any additional validation rules for duration field if needed
+        return true;
+    }
+
+    function validateLocation() {
+        var location = document.getElementById("Location").value;
+        var locationError = document.getElementById("locationError");
+        locationError.textContent = "";
+        if (location.trim() === "") {
+            locationError.textContent = "Location is required.";
+            return false;
+        }
+        // Add any additional validation rules for location field if needed
+        return true;
+    }
+
+    function validateMode() {
+        var mode = document.getElementById("Mode").value;
+        var modeError = document.getElementById("modeError");
+        modeError.textContent = "";
+        if (mode.trim() === "--Select--") {
+            modeError.textContent = "Please select a Mode.";
+            return false;
+        }
+        return true;
+    }
+
+    function validateStipend() {
+        var stipend = document.getElementById("Stipend").value;
+        var stipendError = document.getElementById("stipendError");
+        stipendError.textContent = "";
+        if (stipend.trim() === "") {
+            stipendError.textContent = "Stipend is required.";
+            return false;
+        }
+        // Add any additional validation rules for stipend field if needed
+        return true;
+    }
+
+    function validateWhoCanApply() {
+        var whoCanApply = document.getElementById("WhoCanApply").value;
+        var whoCanApplyError = document.getElementById("whoCanApplyError");
+        whoCanApplyError.textContent = "";
+        if (whoCanApply.trim() === "") {
+            whoCanApplyError.textContent = "Who Can Apply is required.";
+            return false;
+        }
+        // Add any additional validation rules for who can apply field if needed
+        return true;
+    }
+
+    function validateStartDate() {
+        var startDate = document.getElementById("StartDate").value;
+        var startDateError = document.getElementById("startDateError");
+        startDateError.textContent = "";
+        if (startDate.trim() === "") {
+            startDateError.textContent = "Start Date is required.";
+            return false;
+        }
+        // Add any additional validation rules for start date field if needed
+        return true;
+    }
+
+    function validateEndDate() {
+        var endDate = document.getElementById("EndDate").value;
+        var endDateError = document.getElementById("endDateError");
+        endDateError.textContent = "";
+        if (endDate.trim() === "") {
+            endDateError.textContent = "End Date is required.";
+            return false;
+        }
+        // Add any additional validation rules for end date field if needed
+        return true;
+    }
+</script>
+{% endblock %}

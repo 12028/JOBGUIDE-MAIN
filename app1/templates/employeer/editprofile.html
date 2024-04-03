@@ -1,0 +1,139 @@
+{% extends 'employeer\layouts\base.html' %}
+{% block content %}
+<div class="page-title">
+    <!-- ... Rest of your HTML ... -->
+
+    <form id="editprofile" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group mb-3">
+                    <label for="Company-Name" class="form-label">Company Name</label>
+                    <input type="text" class="form-control" id="Company-Name" name="Company-Name" placeholder="Enter Company Name" value="{% if company_name %}{{company_name}}{% endif %}">
+                    <span id="company-name-error" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group mb-3">
+                    <label for="Office-Location" class="form-label">Office Location</label>
+                    <input type="text" class="form-control" id="Office-Location" name="Office-Location" placeholder="Enter Location" value="{% if office_location %}{{office_location}}{% endif %}">
+                    <span id="office-location-error" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group mb-3">
+                    <label for="Address" class="form-label">Address</label>
+                    <textarea class="form-control" id="Address" rows="3" name="Address" placeholder="Enter Address">{% if address %}{{address}}{% endif %}</textarea>
+                    <span id="address-error" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group mb-3">
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group mb-3">
+                    <label for="Phoneno" class="form-label">Phone Number</label>
+                    <input type="text" class="form-control" id="Phoneno" name="Phoneno" placeholder="Phone Number" value="{{phone_number}}">
+                    <span id="phoneno-error" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group mb-3">
+                    <label for="logo" class="form-label">Company Logo</label>
+                    <input type="file" class="form-control" id="logo" name="logo" >
+                    {% if company_logo %}
+                    <img src="{{company_logo.url}}" style="width:210px; height:200px ;">
+                    {% endif %}
+                </div> 
+            </div>
+           
+        </div>
+        
+        <button class="btn btn-primary" style="background-color: #000000"type="submit">Submit</button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('editprofile');
+
+        const companyNameInput = document.getElementById('Company-Name');
+        const companyNameError = document.getElementById('company-name-error');
+
+        const officeLocationInput = document.getElementById('Office-Location');
+        const officeLocationError = document.getElementById('office-location-error');
+
+        const addressInput = document.getElementById('Address');
+        const addressError = document.getElementById('address-error');
+
+        const phonenoInput = document.getElementById('Phoneno');
+        const phonenoError = document.getElementById('phoneno-error');
+
+        function validateCompanyName() {
+            const value = companyNameInput.value.trim();
+            if (value === '') {
+                companyNameError.textContent = 'Company Name is required.';
+            } else {
+                companyNameError.textContent = '';
+            }
+        }
+
+        function validateOfficeLocation() {
+            const value = officeLocationInput.value.trim();
+            if (value === '') {
+                officeLocationError.textContent = 'Office Location is required.';
+            } else {
+                officeLocationError.textContent = '';
+            }
+        }
+
+        function validateAddress() {
+            const value = addressInput.value.trim();
+            if (value === '') {
+                addressError.textContent = 'Address is required.';
+            } else {
+                addressError.textContent = '';
+            }
+        }
+
+
+        function validatePhoneno() {
+            const value = phonenoInput.value.trim();
+            if (value === '') {
+                phonenoError.textContent = 'Phone Number is required.';
+            } else if (!/^\d+$/.test(value) || value.length !== 10) {
+                phonenoError.textContent = 'Phone Number should be 10 digits and contain only numbers.';
+            } else {
+                phonenoError.textContent = '';
+            }
+        }
+
+        function isValidUrl(url) {
+            try {
+                new URL(url);
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        companyNameInput.addEventListener('input', validateCompanyName);
+        officeLocationInput.addEventListener('input', validateOfficeLocation);
+        addressInput.addEventListener('input', validateAddress);
+        websiteUrlInput.addEventListener('input', validateWebsiteUrl);
+        phonenoInput.addEventListener('input', validatePhoneno);
+
+        form.addEventListener('submit', function (event) {
+            validateCompanyName();
+            validateOfficeLocation();
+            validateAddress();
+            validateWebsiteUrl();
+            validatePhoneno();
+
+            if (companyNameError.textContent || officeLocationError.textContent || addressError.textContent || pincodeError.textContent || websiteUrlError.textContent || phonenoError.textContent) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+{% endblock %}

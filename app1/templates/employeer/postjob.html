@@ -1,0 +1,219 @@
+{% extends 'employeer\layouts\base.html' %}
+{% block content %}
+<div class="page-title">
+    <div class="row mb-3">
+        <div class="col-12 col-md-6 order-md-1 order-las">
+            <h3>Post New Job</h3>
+        </div>
+        
+        <div class="col-12 col-md-6 order-md-2 order-first">
+            <nav aria-label="breadcrumb" class='breadcrumb-header'>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'postjob' %}">Jobsettings</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Post Job</li>
+                </ol>
+            </nav>
+        </div>
+
+    </div>
+
+    {% if  verified == 1 %}
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Add Job</h4>
+        </div>
+        
+        <div class="card-body">
+            {% for message in messages %}
+            <div class="alert {{ message.tags}} alert-dismissible show fade">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            <form id="postjob" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group mb-3">
+                            <label for="JobTitle" class="form-label">Job Title</label>
+                            <input type="text" class="form-control" id="JobTitle" name="job_title" placeholder="Enter job title" oninput="validateJobTitle()">
+                            <span id="titleError" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="jobdescription" class="form-label">Job Description</label>
+                        <textarea class="form-control" id="jobdescription" rows="3" name="job_description" placeholder="Enter short description" oninput="validateJobDescription()"></textarea>
+                        <span id="descriptionError" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="joblocation" class="form-label">Job Location</label>
+                        <textarea class="form-control" id="job_location" rows="3" name="office_location" placeholder="Enter location" oninput="validateJoblocation()"></textarea>
+                        <span id="locationError" class="text-danger"></span>
+                    </div>
+                    
+                        
+                    </div>
+                    
+                    
+                    <div class="row">
+
+                        <div class="form-group col-md-6 mb-4">
+                            <label for="emailid" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="emailid" name="contact_email" placeholder="Enter Email" oninput="validateEmail()">
+                            <span id="emailError" class="text-danger"></span>
+                        </div>
+                            <div class="form-group col-md-6 mb-4">
+                                <label for="jobtype" class="form-label">Job Type</label>
+                                <fieldset class="form-group">
+                                    <select class="form-select" id="basicSelect" name="jobtype">
+                                        <option>--Select--</option>
+                                        <option value="Full Time">Full Time</option>
+                                        <option value="Part Time">Part Time</option>
+                                        <option value="Freelancer">Freelancer</option>
+                                    </select>
+                                    <span id="jobTypeError" class="text-danger"></span>
+                                </fieldset>       
+                            </div>    
+                               
+
+                            <div class="form-group col-md-6 mb-4">
+                                <label for="experience" class="form-label">Experience</label>
+                                <input type="number" class="form-control" name="experience" id="experience" placeholder="Enter required experience" oninput="validateExperience()">
+                                <span id="experienceError" class="text-danger"></span>
+                            </div>
+
+
+                            <div class="form-group col-md-6 mb-4">
+                                <label for="vaccancies" class="form-label">Vaccancies</label>
+                                <input type="number" class="form-control" name="vaccancies" id="vaccancies" placeholder="Enter number of vaccancies" oninput="validateVaccancies()">
+                                <input type="hidden" class="form-control" name="va" id="vaccancies" value="{{user.id}}">
+                                <span id="vaccanciesError" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-6 mb-4">
+                                <label for="lastdate" class="form-label">Last date</label>
+                                <input type="date" class="form-control" id="lastdate" name="lastdate" placeholder="Enter Last date to apply for job" oninput="validateLastDate()">
+                                <span id="lastDateError" class="text-danger"></span>
+                            </div>
+                            
+        
+                    </div>
+                    
+                </div>
+                <button class="btn btn-primary" id="postajob" type="submit" style='background-color:black;'>Post Job</button>
+            </form>
+        </div>
+    </div>
+    <!-- Modal for Success Message -->
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Success</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Job posted successfully!
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+
+</div>
+
+
+    {% else %}
+        <div class="alert alert-secondary">
+            <h4 class="alert-heading">You Cannot Post A job</h4>
+            <p>Oops!! Your account needs to be verified by admin,Please wait until then.</p>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    function validateForm() {
+        // ... Your existing form validation logic ...
+    
+        // Ensure all fields are validated
+        return (
+            validateJobTitle() &&
+            validateJobDescription() &&
+            validateEmail() &&
+            validateJobType()
+            // Add additional field validations here
+        );
+    }
+    
+    function validateJobTitle() {
+        var jobTitle = document.getElementById("JobTitle").value;
+        var titleError = document.getElementById("titleError");
+        titleError.textContent = "";
+        if (jobTitle.trim() === "") {
+            titleError.textContent = "Job Title is required.";
+            return false;
+        }
+        return true;
+    }
+    
+    function validateJobDescription() {
+        var jobDescription = document.getElementById("jobdescription").value;
+        var descriptionError = document.getElementById("descriptionError");
+        descriptionError.textContent = "";
+        if (jobDescription.trim() === "") {
+            descriptionError.textContent = "Job Description is required.";
+            return false;
+        }
+        return true;
+    }
+
+    function validateJoblocation() {
+        var joblocation = document.getElementById("joblocation").value;
+        var locationError = document.getElementById("locationError");
+        locationError.textContent = "";
+        if (joblocation.trim() === "") {
+            locationError.textContent = "Job location is required.";
+            return false;
+        }
+        return true;
+    }
+    
+    function validateEmail() {
+        var email = document.getElementById("emailid").value;
+        var emailError = document.getElementById("emailError");
+        emailError.textContent = "";
+        if (email.trim() === "" || !isValidEmail(email)) {
+            emailError.textContent = "Please enter a valid email.";
+            return false;
+        }
+        return true;
+    }
+    
+    function validateJobType() {
+        var jobType = document.getElementById("basicSelect").value;
+        var jobTypeError = document.getElementById("jobTypeError");
+        jobTypeError.textContent = "";
+        if (jobType === "--Select--") {
+            jobTypeError.textContent = "Please select a Job Type.";
+            return false;
+        }
+        return true;
+    }
+    
+    // Function to validate email format
+    function isValidEmail(email) {
+        var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        return emailRegex.test(email);
+    }
+    // After a successful form submission, show the success modal
+    $('#successModal').modal('show');
+
+    </script>
+    
+    
+
+
+{% endblock %}
